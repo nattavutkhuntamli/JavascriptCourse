@@ -35,16 +35,12 @@ const requestHandler = (req, res) => {
             req.on('end', () => {
                 const parsedBody = Buffer.concat(body).toString();
                 const message = parsedBody.split('=')[1];
-                // fs.writeFileSync('message.txt', message); //สร้างไฟล์ชื่อ message.txt และใส่ข้อมูล DUMMY
-                // fs.writeFileSync('message.txt', message); // ไม่ใช้
                 const promisess = new Promise((resolve, reject) => {
                     setTimeout(() => {
                         fs.writeFile('message.txt', message, (err) => {
                             if (err) {
-                                // console.error('เกิดข้อผิดพลาด:', err);
                                 reject('บันทึกข้อมูลไม่สำเร็จ');
                             } else {
-                                // console.log('บันทึกข้อมูลเรียบร้อย');
                                 resolve('บันทึกข้อมูลเรียบร้อย');
                             }
                         });
