@@ -25,7 +25,10 @@ app.use(express.json());
  * : ปิดการใช้งานฮีดเดอร์ "X-Powered-By" เพื่อเพิ่มความปลอดภัยของแอปพลิเคชัน.
  */
 app.disable("x-powered-by");
-
+/**
+ * ตั้งค่า path ให้อ่าน public
+ */
+app.use(express.static(path.join(__dirname, 'public')))
 
 /**
  *  import router
