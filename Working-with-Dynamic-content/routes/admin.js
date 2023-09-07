@@ -5,17 +5,24 @@ const products = [];
 
 // /admin/add-product
 router.get('/add-product', (req, res, next) => {
-    res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
+    // res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
+    res.render('add-product', { 
+        pageTitle: 'Add Product', 
+        path: '/admin/add-product', 
+        formsCSS: true, 
+        productCSS: true, 
+        activeAddProduct: true 
+    });
 });
 // /admin/add-product
 router.post('/add-product', (req, res, next) => {
     // return res.send(`<h1>${req.body.title}</h1>`);
     // console.log(req.body);
-    products.push({title:req.body.title})
+    products.push({ title: req.body.title })
     return res.redirect('/');
 })
 
-module.exports = { 
+module.exports = {
     RouteAdmin: router,
     products: products
 };

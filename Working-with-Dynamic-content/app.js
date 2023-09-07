@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.port || 3000;
 const path = require('path')
+const expressHbs = require('express-handlebars')
 /**
  *  template  ejs pug  handlebars
  *  ejs <p><%= name %></p>
@@ -9,8 +10,22 @@ const path = require('path')
  *  handlebars {{name}}
  */
 /** ตั้งค่า settimeplate เป็น pug */
-app.set('view engine','pug')
-app.set('views', 'views');
+// app.set('view engine','pug') //อันนี้ของ pug
+// app.set('views', 'views');
+
+// การ set template ของ hbs หรือ handlebars
+// app.engine('hbs',expressHbs({
+//     layoutsDir:'views/layouts/',
+//     defaultLayout:'main-layout',
+//     extname: 'hbs'
+// })); //อันนี้ของ handlebars
+// app.set('view engine','hbs');
+// app.set('views', 'views');
+
+// การ settemplate ของ ejs
+app.set('view engine','ejs')
+app.set('views','views')
+
 // const bodyParser = require('body-parser');
 /**
  *  ใช้สำหรับการประมวลผลข้อมูลแบบ URL-encoded โดยเปิดใช้งานการแปลงข้อมูลที่ซับซ้อนและกำหนดขีดจำกัดขนาดไฟล์ที่ส่งเข้ามาที่ 500MB.
@@ -49,7 +64,8 @@ app.use(shopRoute);
 
 app.use((req, res, next) => {
 //    return res.status(404).send('<h1>404 Page not found</h1>');
-    res.status(404).sendFile(path.join(__dirname,'./','views','404.html'));
+    // res.status(404).sendFile(path.join(__dirname,'./','views','404.html'));
+    res.status(404).render('404',{pageTitle:"404 Page Not Found"})
 })
 
 
