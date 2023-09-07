@@ -2,8 +2,16 @@ const express = require('express');
 const app = express();
 const port = process.env.port || 3000;
 const path = require('path')
+/**
+ *  template  ejs pug  handlebars
+ *  ejs <p><%= name %></p>
+ *  pug p #{name}
+ *  handlebars {{name}}
+ */
+/** ตั้งค่า settimeplate เป็น pug */
+app.set('view engine','pug')
+app.set('views', 'views');
 // const bodyParser = require('body-parser');
-
 /**
  *  ใช้สำหรับการประมวลผลข้อมูลแบบ URL-encoded โดยเปิดใช้งานการแปลงข้อมูลที่ซับซ้อนและกำหนดขีดจำกัดขนาดไฟล์ที่ส่งเข้ามาที่ 500MB.
  */
