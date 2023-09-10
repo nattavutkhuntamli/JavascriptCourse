@@ -9,10 +9,10 @@ app.set('views','views')
 /**
  *  Setting express
  */
-app.use(express.urlencoded({extended:false,  limit:"500mb"}))
-app.use(express.json())
-app.use(express.static(path.join(__dirname,'public')))
-const PORT = process.env.PORT || 3030;
+app.use(express.urlencoded({extended:false,  limit:"500mb"})) //แปลงข้อมูลที่ถูกส่งมาในรูปแบบ url
+app.use(express.json()) //แปลข้อความเป็น json
+app.use(express.static(path.join(__dirname,'public'))) // set path เข้าถึง public
+const PORT = process.env.PORT || 3030; //ตั้งค่า port
 
 /**
  *  controller
