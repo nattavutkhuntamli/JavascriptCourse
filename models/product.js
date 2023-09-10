@@ -26,6 +26,7 @@ module.exports = class Product {
   }
 
   save() {
+    this.id =  Math.floor(Math.random()*1000).toString()
     getProductsFromFile(products => {
       products.push(this)
       fs.writeFile(p, JSON.stringify(products), (err) => {
@@ -37,5 +38,14 @@ module.exports = class Product {
 
   static fetchAll(cb) {
     getProductsFromFile(cb);
+  }
+
+  static findById(id, cb) {
+    //find วน array ใช้สำหรับค้นหาข้อมูลใน loop แทน For โดยใช้เงือนไข id ที่รับ ถ้าเจอจะไม่ ขึ้น undefin
+   
+    getProductsFromFile(products => {
+      const product = products.find(p => p.id === id);
+      cb(product);
+    });
   }
 };
