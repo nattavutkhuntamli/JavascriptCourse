@@ -2,12 +2,15 @@ const express  = require('express')
 const app = express()
 const path = require('path')
 
+/**
+ *  Workshop nodejs connect mysql
+ */
 // Setting template ejs
 app.set('view engine','ejs')
 app.set('views','views')
 
 /**
- *  Setting express
+ *  Setting express 
  */
 app.use(express.urlencoded({extended:false,  limit:"500mb"})) //แปลงข้อมูลที่ถูกส่งมาในรูปแบบ url
 app.use(express.json()) //แปลข้อความเป็น json
