@@ -2,12 +2,15 @@ const express  = require('express')
 const app = express()
 const path = require('path')
 
+/**
+ *  Workshop nodejs connect mysql
+ */
 // Setting template ejs
 app.set('view engine','ejs')
 app.set('views','views')
 
 /**
- *  Setting express
+ *  Setting express 
  */
 app.use(express.urlencoded({extended:false,  limit:"500mb"})) //แปลงข้อมูลที่ถูกส่งมาในรูปแบบ url
 app.use(express.json()) //แปลข้อความเป็น json
@@ -18,6 +21,13 @@ const PORT = process.env.PORT || 3030; //ตั้งค่า port
  *  controller
  */
 const errorController = require('./controllers/error');
+
+// const db = require('./util/database');
+// db.execute('SELECT * FROM `products`').then(result => {
+//     console.log(result[0])
+// }).catch(err => {
+//     console.log(err)
+// });
 
 /**
  *  import router

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
-    "start":"node app.js"
+    "start": "node app.js"
   },
   "author": "Nattawut khuntamli",
   "license": "ISC",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "ejs": "^3.1.9",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mysql2": "^3.6.1"
   }
 }
