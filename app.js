@@ -2,12 +2,16 @@ const express  = require('express')
 const app = express()
 const path = require('path')
 
+/**
+ *  Workshop nodejs connect mysql
+ *  EP11 การใช้ Understanding Sequelize
+ */
 // Setting template ejs
 app.set('view engine','ejs')
 app.set('views','views')
 
 /**
- *  Setting express
+ *  Setting express 
  */
 app.use(express.urlencoded({extended:false,  limit:"500mb"})) //แปลงข้อมูลที่ถูกส่งมาในรูปแบบ url
 app.use(express.json()) //แปลข้อความเป็น json
@@ -18,6 +22,14 @@ const PORT = process.env.PORT || 3030; //ตั้งค่า port
  *  controller
  */
 const errorController = require('./controllers/error');
+const sequelize = require('./util/database');
+
+// const db = require('./util/database');
+// db.execute('SELECT * FROM `products`').then(result => {
+//     console.log(result[0])
+// }).catch(err => {
+//     console.log(err)
+// });
 
 /**
  *  import router
@@ -25,10 +37,42 @@ const errorController = require('./controllers/error');
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
+const Product = require('./models/product')
+const User = require('./models/user')
+
+app.use(( req, res, next) => {
+    User.findByPk(1).then(user => {
+        req.user = user;
+        next()
+    })
+    .catch(err => {
+        console.error(err);
+    })
+})
 app.use('/admin',adminRoutes)
 app.use(shopRoutes)
 
 
 app.use(errorController.get404);
 
-app.listen(PORT,() => { console.log(`Server run is http://localhost:${PORT}`); })
+Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
+User.hasMany(Product)
+sequelize
+.sync({ focus:true})
+.then(rs => {
+    return User.findByPk(1)
+})
+.then(user => {
+    if(!user){
+        return User.create({ name:'Max',email:'Max@gmail.com' });
+    }
+    return user;
+})
+.then(user => {
+    console.log(user);
+    app.listen(PORT , () => { console.log(`RUN SERVER  ON PORT ${PORT}`); } )
+})
+.catch(err => {
+    console.error(err);
+});
+   

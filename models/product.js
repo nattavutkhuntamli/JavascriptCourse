@@ -1,51 +1,31 @@
-const fs = require("fs");
-const path = require("path");
+const Sequelize = require('sequelize')
 
-const p = path.join(
-  path.dirname(process.mainModule.filename),
-  "data",
-  "products.json"
-);
+const sequelize = require('../util/database')
 
-const getProductsFromFile = (cb) => {
-  fs.readFile(p, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
-      cb(JSON.parse(fileContent));
+// โครงสร้างฐานข้อมูลแบบ sequelize
+const Product = sequelize.define('product', {
+    id:{
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    title: Sequelize.STRING,
+    price:{
+        type: Sequelize.DOUBLE,
+        allowNull: false
+    },
+    imageUrl: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    description: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    userId: {
+        type: Sequelize.INTEGER,
+        allowNull : false
     }
-  });
-};
+});
 
-module.exports = class Product {
-  constructor(title,imageUrl,price, description) {
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.price = price;
-    this.description = description;
-  }
-
-  save() {
-    this.id =  Math.floor(Math.random()*1000).toString()
-    getProductsFromFile(products => {
-      products.push(this)
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        console.log(err);
-      });
-    });
-    
-  }
-
-  static fetchAll(cb) {
-    getProductsFromFile(cb);
-  }
-
-  static findById(id, cb) {
-    //find วน array ใช้สำหรับค้นหาข้อมูลใน loop แทน For โดยใช้เงือนไข id ที่รับ ถ้าเจอจะไม่ ขึ้น undefin
-   
-    getProductsFromFile(products => {
-      const product = products.find(p => p.id === id);
-      cb(product);
-    });
-  }
-};
+module.exports = Product
