@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 18, 2023 at 04:35 PM
+-- Generation Time: Sep 19, 2023 at 03:12 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -28,21 +28,43 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `products` (
-  `id` int UNSIGNED NOT NULL,
-  `title` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
-  `price` double NOT NULL DEFAULT '0',
+  `id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `price` double NOT NULL,
+  `imageUrl` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `description` text COLLATE utf8mb4_general_ci NOT NULL,
-  `imageUrl` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `userId` int NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `title`, `price`, `description`, `imageUrl`) VALUES
-(1, 'A Warter', 13, 'this is an warter', 'https://i.imgflip.com/4qu9x4.jpg'),
-(12, 'warter', 12, 'description', 'https://i.imgflip.com/4qu9x4.jpg'),
-(13, 'book2', 10, 'book2', 'https://teambuilding.com/wp-content/uploads/2020/12/101-tough-conversations.jpg');
+INSERT INTO `products` (`id`, `title`, `price`, `imageUrl`, `description`, `userId`, `createdAt`, `updatedAt`) VALUES
+(1, 'LARAVEL 11', 8, 'https://pbs.twimg.com/profile_images/1163911054788833282/AcA2LnWL_400x400.jpg', 'LARAVEL 11', 1, '2023-09-19 14:54:30', '2023-09-19 15:10:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `createdAt`, `updatedAt`) VALUES
+(1, 'Max', 'Max@gmail.com', '2023-09-19 14:54:30', '2023-09-19 14:54:30');
 
 --
 -- Indexes for dumped tables
@@ -53,7 +75,13 @@ INSERT INTO `products` (`id`, `title`, `price`, `description`, `imageUrl`) VALUE
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD KEY `userId` (`userId`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -63,7 +91,23 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
