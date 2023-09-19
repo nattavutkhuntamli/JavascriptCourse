@@ -4,6 +4,7 @@ const path = require('path')
 
 /**
  *  Workshop nodejs connect mysql
+ *  EP11 Understanding Sequelize
  */
 // Setting template ejs
 app.set('view engine','ejs')
