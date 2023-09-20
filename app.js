@@ -65,7 +65,27 @@ app.use(shopRoutes)
 
 
 app.use(errorController.get404);
+/**
+ * 
+    Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });: ความสัมพันธ์ของตาราง Product และ User คือ "ManyToOne" โดยแต่ละสินค้า (Product) จะเป็นของผู้ใช้งาน (User) และถูกตั้งค่าให้มี constraints และการลบแบบ "CASCADE" ซึ่งหมายถึงถ้าผู้ใช้ถูกลบแล้ว สินค้าที่เกี่ยวข้องจะถูกลบทั้งหมดด้วย.
 
+    User.hasMany(Product);: ผู้ใช้งาน (User) สามารถมีหลายสินค้า (Product) โดยเรากำหนดความสัมพันธ์ให้ผู้ใช้สามารถมีหลายสินค้า.
+
+    User.hasOne(Cart);: ผู้ใช้งาน (User) สามารถมีตะกร้า (Cart) ได้เพียงตะกร้าเดียว ความสัมพันธ์นี้แสดงว่าแต่ละผู้ใช้จะมีตะกร้าเดียว.
+
+    Cart.belongsTo(User);: ตะกร้า (Cart) เป็นของผู้ใช้งาน (User) และความสัมพันธ์นี้เป็นแบบ "OneToOne" คือตะกร้าเชื่อมโยงกับผู้ใช้งานเพียงคนเดียว.
+
+    Cart.belongsToMany(Product, { through: CartItem });: ตะกร้า (Cart) สามารถเก็บหลายสินค้า (Product) ผ่านตารางกลางที่ชื่อว่า CartItem และสร้างความสัมพันธ์ระหว่างตะกร้าและสินค้า โดยสามารถเพิ่มหรือลบสินค้าออกจากตะกร้าได้.
+
+    Product.belongsToMany(Cart, { through: CartItem });: สินค้า (Product) สามารถถูกเพิ่มในตะกร้า (Cart) ของผู้ใช้ได้ โดยใช้ตารางกลาง CartItem เช่นกัน.
+
+    Order.belongsTo(User): คำสั่งนี้เป็นการบอกว่าคำสั่ง (Order) เป็นของผู้ใช้งาน (User) ซึ่งหมายถึงคำสั่งจะถูกผูกกับผู้ใช้งานที่สร้างคำสั่งนั้น.
+
+    User.hasMany(Order): ผู้ใช้งาน (User) สามารถมีหลายคำสั่ง (Order) ได้.
+
+    Order.belongsToMany(Product, {through: OrderItem});: คำสั่ง (Order) สามารถมีหลายสินค้า (Product) ผ่านตารางกลางที่ชื่อว่า OrderItem โดยคำสั่งสามารถรวมหลายรายการสินค้าได้.
+
+ */
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
 User.hasOne(Cart);
