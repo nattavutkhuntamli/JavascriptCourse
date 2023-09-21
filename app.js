@@ -18,24 +18,24 @@ const PORT = process.env.PORT || 3030; //ตั้งค่า port
  *  controller
  */
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database')
+const {mongoConnect}  = require('./util/database')
 /**
  *  import router
  */
 
-// app.use((req, res, next) => {
+app.use((req, res, next) => {
+    next();
+})
 
-// })
-
-// const adminRoutes = require('./routes/admin')
 // const shopRoutes = require('./routes/shop')
-// app.use('/admin',adminRoutes)
 // app.use(shopRoutes)
 
+const adminRoutes = require('./routes/admin')
+app.use('/admin',adminRoutes)
 
-// app.use(errorController.get404);
 
-mongoConnect ((client) => {
-    // console.log(client)
+app.use(errorController.get404);
+
+mongoConnect((client) => {
     app.listen(PORT,() => { console.log(`Server run is http://localhost:${PORT}`); })
-})
+});
