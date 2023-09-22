@@ -1,7 +1,5 @@
 const Product = require('../models/product');
-
 exports.getAddProduct = (req, res, next) => {
-
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
@@ -17,7 +15,7 @@ exports.postAddProduct = (req, res, next) => {
   const product = new Product(title, price, description, imageUrl );
   product.save()
   .then(result => {
-     res.redirect('/admin/product');
+    res.redirect('/admin/products')
   })
   .catch(err => {
     throw err
@@ -26,22 +24,25 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getEditProduct = (req, res, next) => {
+  console.log(req.params);
+  console.log(req.query);
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findById(prodId, product => {
-    if (!product) {
-      return res.redirect('/');
-    }
+  Product.findById(prodId)
+  .then(product => {
     res.render('admin/edit-product', {
       pageTitle: 'Edit Product',
       path: '/admin/edit-product',
       editing: editMode,
       product: product
     });
-  });
+  }).catch(err => {
+    console.log(err);
+    throw err
+  })
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -50,15 +51,27 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
-  const updatedProduct = new Product(
-    prodId,
-    updatedTitle,
-    updatedImageUrl,
-    updatedDesc,
-    updatedPrice
-  );
-  updatedProduct.save();
-  res.redirect('/admin/products');
+
+  Product.findById(prodId)
+  .then(productData => {
+      const product =  new Product( 
+        updatedTitle,
+        updatedPrice,
+        updatedDesc,
+        updatedImageUrl,
+        prodId
+      )
+      product.save()
+      .then(rs => {
+        console.log(`Update Success!`);
+        res.redirect('/admin/products')
+      }).catch(err => {
+         console.log(`Update fasle`);
+         console.log(err);
+      })
+  }).catch(err => {
+    console.log(err);
+  })
 };
 
 exports.getProducts = (req, res, next) => {
@@ -76,6 +89,16 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId);
-  res.redirect('/admin/products');
+  Product.findById(prodId)
+  .then(product => {
+     Product.deleteById(prodId)
+     .then(rs => {
+        res.redirect('/admin/products');
+     })
+     .catch(err => {
+       console.log(err);
+     })
+  }).catch(err => {
+     console.log(err);
+  })
 };

@@ -1,0 +1,30 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <form class="product-form" action="/user/<% if (editing) { %>edit-user<% } else { %>add-users<% } %>" method="POST">
+            <div class="form-control">
+                <label for="title">Username</label>
+                <input type="text" name="username" id="username" value="<% if (editing) { %><%= users.username %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="imageUrl">Image URL</label>
+                <input type="text" name="imageUrl" id="imageUrl" value="<% if (editing) { %><%= users.imageUrl %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="price">email</label>
+                <input type="email" name="email" id="email"  value="<% if (editing) { %><%= users.email %><% } %>">
+            </div>
+            <% if (editing) { %>
+                <input type="hidden" value="<%= users._id %>" name="userId">
+            <% } %>
+
+            <button class="btn" type="submit"><% if (editing) { %>Update User<% } else { %>Add User<% } %></button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

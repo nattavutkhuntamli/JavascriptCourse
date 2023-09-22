@@ -6,35 +6,35 @@
         <%- include('../includes/navigation.ejs') %>
 
             <main>
-                <% if (prods.length> 0) { %>
+                <% if (users.length > 0) { %>
                     <div class="grid">
-                        <% for (let product of prods) { %>
+                        <% for (let user of users) { %>
                             <article class="card product-item">
                                 <header class="card__header">
                                     <h1 class="product__title">
-                                        <%= product.title %>
+                                        <%= user.username %>
                                     </h1>
                                 </header>
                                 <div class="card__image">
-                                    <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                                    <img src="<%= user.imageUrl %>" alt="<%= user.title %>">
                                 </div>
                                 <div class="card__content">
-                                    <h2 class="product__price">$
-                                        <%= product.price %>
-                                    </h2>
                                     <p class="product__description">
-                                        <%= product.description %>
+                                        <%= user.email %>
                                     </p>
                                 </div>
                                 <div class="card__actions">
-                                    <a href="/products/<%= product._id %>" class="btn">Details</a>
-                                    <%- include('../includes/add-to-cart.ejs',{product:product}) %>
+                                    <a href="/user/edit-user/<%= user._id %>?edit=true" class="btn">Edit</a>
+                                    <form action="/user/delete-user" method="POST">
+                                        <input type="hidden" name="UserId" id="UserId" value="<%= user._id %>">
+                                        <button class="btn" type="submit">Delete</button>
+                                    </form>
                                 </div>
                             </article>
                             <% } %>
                     </div>
                     <% } else { %>
-                        <h1>No Products Found!</h1>
+                        <h1>No User Found!</h1>
                         <% } %>
             </main>
             <%- include('../includes/end.ejs') %>

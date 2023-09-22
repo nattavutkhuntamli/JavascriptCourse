@@ -19,21 +19,29 @@ const PORT = process.env.PORT || 3030; //ตั้งค่า port
  */
 const errorController = require('./controllers/error');
 const {mongoConnect}  = require('./util/database')
+const User = require('./models/user');
+
 /**
  *  import router
  */
 
 app.use((req, res, next) => {
-    next();
+    User.findById('5baa2528563f16379fc8a610')
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
 })
 
-// const shopRoutes = require('./routes/shop')
-// app.use(shopRoutes)
+const shopRoutes = require('./routes/shop')
+app.use(shopRoutes)
 
 const adminRoutes = require('./routes/admin')
 app.use('/admin',adminRoutes)
 
-
+const userRoutes = require('./routes/user')
+app.use('/user',userRoutes)
 app.use(errorController.get404);
 
 mongoConnect((client) => {
