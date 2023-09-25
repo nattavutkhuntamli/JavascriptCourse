@@ -1,11 +1,12 @@
 const mongodb = require('mongodb')
 const { getDb } = require('../util/database')
 class User {
-    constructor(username, imageUrl, email, id) {
+    constructor(username, imageUrl, email, id, cart) {
         this.username = username;
         this.imageUrl = imageUrl;
         this.email = email;
         this.id = id ? mongodb.ObjectId(id) : null;
+        this.cart = cart; // {items: []}
     }
 
     save(){
@@ -29,6 +30,20 @@ class User {
         })
     }
 
+    addToCart(product) {
+      // const cartProduct= this.cart.items.findIndex(cp => {
+      //    return cp._id === product._id
+      // });
+      const updatedcart = {items:[{...product,quantity:1}]};
+      const db = getDb();
+      return db
+      .collection('users')
+      .insertOne(
+         {_id: this.id},
+         {$set:{cart:updatedcart}}
+      )
+    }
+
     //ดึงข้อมูลยูสทั้งหมด
     static fetchAll() {
        const db = getDb()
@@ -47,9 +62,9 @@ class User {
     //ค้นหายูส
     static findById(userId) {
        const db = getDb()
-       return db.collection('users').find({_id:new mongodb.ObjectId(userId)})
-       .next()
+       return db.collection('users').findOne({_id:new mongodb.ObjectId(userId)})
        .then(users => {
+          console.log(users);
           return users;
        })
        .catch(err => {
